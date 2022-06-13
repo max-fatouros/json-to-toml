@@ -1,8 +1,10 @@
 import json
 import os.path
-# import toml
+import toml
 from tkinter import Tk  # from tkinter import Tk for Python 3.x
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilenames
+
+from toml.decoder import TomlDecodeError
 
 
 def traverse(dictionary: dict, out_file, indent_spaces=4, parent_keys="", depth=0):
@@ -60,20 +62,26 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, parent_keys="", depth=
 
 
 Tk().withdraw()  # Suppresses unnecessary window
-filename_in = askopenfilename()
-# filename_in = "1.json"
-filename_out = os.path.splitext(filename_in)[0] + ".toml"
+filenames_in = askopenfilenames()
 
-with open(filename_in, encoding='utf-8') as file:
-    jDict = json.load(file)
+for filename_in in filenames_in:
+    filename_out = os.path.splitext(filename_in)[0] + ".toml"
 
-with open(filename_out, "w", encoding='utf-8') as file:
-    # file.write(toml.dumps(jDict))
-    traverse(jDict, file, indent_spaces=4)
+    with open(filename_in, encoding='utf-8') as file:
+        jDict = json.load(file)
 
-# with open(filename_out, encoding='utf-8') as f:
-#     tDict = toml.load(f)
+    with open(filename_out, "w", encoding='utf-8') as file:
+        # file.write(toml.dumps(jDict))
+        traverse(jDict, file, indent_spaces=4)
 
+    with open(filename_out, encoding='utf-8') as f:
+        # Just checking to make sure it can be read
+        try:
+            tDict = toml.load(f)
+            print(f"Success reading {filename_out}")
+        except TomlDecodeError as e:
+            print(f"Error reading {filename_out}")
+            print(e)
 
 # TODO: Compare dictionaries after processing.
 #  Need to implement comparison while taking into account that JSON supports "null", while TOML does not.

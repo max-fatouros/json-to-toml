@@ -1,7 +1,7 @@
 # json-to-toml
 Converts JSON to TOML format. Preserves ordering.
 
-Converts the values of keys named "note" into comments, replaces null-types with comments.
+Converts the values from keys named "note" into comments, replaces null-types with comments.
 ### Example
 <table>
 <tr>

@@ -96,9 +96,9 @@ if __name__ == '__main__':
             # Just checking to make sure it can be read after conversion
             try:
                 tDict = tomli.load(f)
-                print(f"Success reading {filename_out} as dictionary")
+                print("\u001b[32m", f"Success reading {filename_out} as dictionary", "\u001b[0m")
             except tomli.TOMLDecodeError as e:
-                print(f"Error reading {filename_out} as dictionary")
+                print("\u001b[31m", f"Error reading {filename_out} as dictionary", "\u001b[0m")
                 print(e)
 
     # TODO: Compare dictionaries after processing.

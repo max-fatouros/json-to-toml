@@ -1,10 +1,10 @@
 import json
 import os.path
-import toml
+import tomli
+
 from tkinter import Tk  # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilenames
 
-from toml.decoder import TomlDecodeError
 
 
 def traverse(dictionary: dict, out_file, indent_spaces=4, parent_keys="", depth=0):
@@ -71,15 +71,15 @@ for filename_in in filenames_in:
         jDict = json.load(file)
 
     with open(filename_out, "w", encoding='utf-8') as file:
-        # file.write(toml.dumps(jDict))
+        # file.write(tomli.dumps(jDict))
         traverse(jDict, file, indent_spaces=4)
 
-    with open(filename_out, encoding='utf-8') as f:
-        # Just checking to make sure it can be read
+    with open(filename_out, 'rb') as f:
+        # Just checking to make sure it can be read after conversion
         try:
-            tDict = toml.load(f)
+            tDict = tomli.load(f)
             print(f"Success reading {filename_out}")
-        except TomlDecodeError as e:
+        except tomli.TOMLDecodeError as e:
             print(f"Error reading {filename_out}")
             print(e)
 

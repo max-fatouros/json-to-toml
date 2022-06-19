@@ -84,9 +84,9 @@ for filename_in in filenames_in:
         # Just checking to make sure it can be read after conversion
         try:
             tDict = tomli.load(f)
-            print(f"Success reading {filename_out}")
+            print(f"Success reading {filename_out} as dictionary")
         except tomli.TOMLDecodeError as e:
-            print(f"Error reading {filename_out}")
+            print(f"Error reading {filename_out} as dictionary")
             print(e)
 
 # TODO: Compare dictionaries after processing.

@@ -2,7 +2,8 @@ import json
 import os.path
 import tomli
 
-from tkinter import Tk  # from tkinter import Tk for Python 3.x
+# For file explorer
+from tkinter import Tk
 from tkinter.filedialog import askopenfilenames
 
 
@@ -47,6 +48,7 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
             if type(value) is str:
                 value = f'"{value}"'
             elif type(value) is bool:
+                # toml only supports lower case booleans
                 value = str(value).lower()
             elif value is None:
                 if comment_nulls:
@@ -66,7 +68,7 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
 
 
 Tk().withdraw()  # Suppresses unnecessary window
-filenames_in = askopenfilenames()
+filenames_in = askopenfilenames()  # Opens window to choose JSON files, can choose multiple files.
 
 for filename_in in filenames_in:
     filename_out = os.path.splitext(filename_in)[0] + ".toml"
@@ -88,7 +90,7 @@ for filename_in in filenames_in:
             print(e)
 
 # TODO: Compare dictionaries after processing.
-#  Need to implement comparison while taking into account that JSON supports "null", while TOML does not.
+#  Need to implement comparison while taking into account that JSON supports null-types, while TOML does not.
 # if jDict == tDict:
 #     print("\u001b[32m", "Success!", "\u001b[0m")
 # else:

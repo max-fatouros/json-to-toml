@@ -5,8 +5,8 @@ Converts the values from keys named "note" into comments, replaces null-types wi
 ### Example
 <table>
 <tr>
-<th> JSON </th>
-<th> TOML </th>
+<th> JSON (input) </th>
+<th> TOML (output) </th>
 </tr>
 <tr>
 <td>

@@ -11,7 +11,8 @@ from tkinter.filedialog import askopenfilenames
 def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
              comment_notes=True, comment_nulls=True, parent_keys=""):
     """
-    Traverses dictionary and outputs a TOML file of its contents.
+    Recursively traverses dictionary and outputs a TOML file of its contents.
+    
     :param dictionary: Dictionary to be converted to TOML format.
     :param out_file: TOML output file (Actual file, not just filename. Must open beforehand).
     :param indent_spaces: number of spaces for TOML indentation

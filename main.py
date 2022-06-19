@@ -7,7 +7,6 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilenames
 
 
-
 def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
              comment_notes=True, comment_nulls=True, parent_keys=""):
     """
@@ -19,11 +18,13 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
     :param comment_nulls: Replace null-types with TOML comments
     :param comment_notes: Replace keys named "note" with comments placed before table taken from that keys value.
     """
+
     dicts = []
     keys = []
     for key, value in dictionary.items():
         if type(value) is dict:
             dicts.append(key)
+
         else:
             keys.append(key)
 
@@ -42,19 +43,24 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
             key = f"{parent_keys}{key}"
             out_file.write(depth * " " * indent_spaces)
             out_file.write(f"[{key}]\n")
+
             traverse(sub_dict, out_file, indent_spaces=indent_spaces, depth=depth + 1,
                      comment_notes=comment_notes, comment_nulls=comment_nulls, parent_keys=f"{key}.")
+
         else:
             value = dictionary[key]
             if type(value) is str:
                 value = f'"{value}"'
+
             elif type(value) is bool:
                 # toml only supports lower case booleans
                 value = str(value).lower()
+
             elif value is None:
                 if comment_nulls:
                     out_file.write((depth - 1) * " " * indent_spaces)
                     out_file.write(f"# {key}\n")
+
                 continue
 
             out_file.write((depth - 1) * " " * indent_spaces)

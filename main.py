@@ -7,12 +7,15 @@ from tkinter.filedialog import askopenfilenames
 
 
 
-def traverse(dictionary: dict, out_file, indent_spaces=4, parent_keys="", depth=0):
+def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
+             comment_notes=True, comment_nulls=True, parent_keys=""):
     """
     Traverses dictionary and outputs a TOML file of its contents.
     :param dictionary: Dictionary to be converted to TOML format.
     :param out_file: TOML output file (Actual file, not just filename. Must open beforehand).
     :param indent_spaces: number of spaces for TOML indentation
+    :param comment_nulls: Replace null-types with TOML comments
+    :param comment_notes: Replace keys named "note" with comments placed before table taken from that keys value.
     """
     dicts = []
     keys = []
@@ -28,7 +31,7 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, parent_keys="", depth=
         if type(dictionary[key]) is dict:
             sub_dict = dictionary[key]
 
-            if 'Note' in sub_dict:
+            if comment_notes and 'note' in (key.lower() for key in sub_dict):
                 out_file.write(depth * " " * indent_spaces)
                 out_file.write(f"# {sub_dict['Note']}\n")
                 del sub_dict['Note']
@@ -37,17 +40,18 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, parent_keys="", depth=
             key = f"{parent_keys}{key}"
             out_file.write(depth * " " * indent_spaces)
             out_file.write(f"[{key}]\n")
-            traverse(sub_dict, out_file, indent_spaces=indent_spaces, parent_keys=f"{key}.", depth=depth + 1)
-
+            traverse(sub_dict, out_file, indent_spaces=indent_spaces, depth=depth + 1,
+                     comment_notes=comment_notes, comment_nulls=comment_nulls, parent_keys=f"{key}.")
         else:
             value = dictionary[key]
             if type(value) is str:
                 value = f'"{value}"'
-            if type(value) is bool:
+            elif type(value) is bool:
                 value = str(value).lower()
-            if value is None:
-                # Skips writing "None" to TOML, as TOML does not support null types.
-                # The best alternative I could find was simply to not include them in the output.
+            elif value is None:
+                if comment_nulls:
+                    out_file.write((depth - 1) * " " * indent_spaces)
+                    out_file.write(f"# {key}\n")
                 continue
 
             out_file.write((depth - 1) * " " * indent_spaces)

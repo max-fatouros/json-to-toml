@@ -1,5 +1,5 @@
 # json-to-toml
-Converts JSON to TOML format. Preserves ordering.
+Converts JSON to TOML format. Preserves ordering, adds indentation.
 
 Converts the values from keys named "note" into comments, replaces null-types with comments.
 ### Example

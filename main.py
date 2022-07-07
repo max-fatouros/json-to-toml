@@ -30,6 +30,7 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
 
     for index, key in enumerate(ordered_keys):
         if type(dictionary[key]) is dict:
+            if index != 0: out_file.write("\n")
             sub_dict = dictionary[key]
 
             if comment_notes and 'note' in (key.lower() for key in sub_dict):
@@ -58,13 +59,6 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
 
             out_file.write((depth - 1) * " " * indent_spaces)
             out_file.write(f"{key} = {value}\n")
-
-            if index == len(dictionary) - 1:
-                out_file.write("\n")
-
-            elif type(dictionary[ordered_keys[index + 1]]) is dict:
-                # if the next value is a dictionary, print a newline.
-                out_file.write("\n")
 
 
 Tk().withdraw()  # Suppresses unnecessary window

@@ -44,13 +44,17 @@ def traverse(dictionary: dict, out_file, indent_spaces=4, depth=0,
             out_file.write(f"[{key}]\n")
             traverse(sub_dict, out_file, indent_spaces=indent_spaces, depth=depth + 1,
                      comment_notes=comment_notes, comment_nulls=comment_nulls, parent_keys=f"{key}.")
+
         else:
             value = dictionary[key]
+
             if type(value) is str:
                 value = f'"{value}"'
+
             elif type(value) is bool:
                 # toml only supports lower case booleans
                 value = str(value).lower()
+
             elif value is None:
                 if comment_nulls:
                     out_file.write((depth - 1) * " " * indent_spaces)

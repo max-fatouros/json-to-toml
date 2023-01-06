@@ -36,4 +36,4 @@ age = 22
 </table>
 
 ### How to run
-Run `main.py`, choose one or more JSON file to convert using the file selector.
+Run `main.py`, then choose one or more JSON file to convert using the file selector.
